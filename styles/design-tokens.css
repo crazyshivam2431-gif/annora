@@ -1,0 +1,30 @@
+:root {
+  --annora-space-1: 0.25rem;
+  --annora-space-2: 0.5rem;
+  --annora-space-3: 0.75rem;
+  --annora-space-4: 1rem;
+  --annora-space-5: 1.5rem;
+  --annora-space-6: 2rem;
+  --annora-space-7: 3rem;
+  --annora-space-8: 4.5rem;
+  --annora-radius-sm: 8px;
+  --annora-radius-md: 14px;
+  --annora-radius-lg: 20px;
+  --annora-radius-xl: 28px;
+  --annora-motion-fast: 160ms;
+  --annora-motion-base: 240ms;
+  --annora-motion-slow: 650ms;
+  --annora-ease: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+:root {
+  --annora-forest: #17332c;
+  --annora-teal: #2f8067;
+  --annora-mint: #e8f1ec;
+  --annora-coral: #d76b35;
+  --annora-saffron: #d89b3d;
+  --annora-ivory: #f4f7f3;
+  --annora-ink: #17332c;
+  --annora-muted: #68756e;
+  --annora-border: #dce4dd;
+}
