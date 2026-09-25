@@ -6,6 +6,13 @@ import { FormEvent, useState } from 'react';
 import { Eye, EyeOff } from 'lucide-react';
 import { SiteHeader } from '@/components/site-header';
 
+const demoAccounts = [
+  { label: 'Admin', email: 'admin@annora.in' },
+  { label: 'Donor', email: 'donor@demo.annora.in' },
+  { label: 'NGO', email: 'ngo@demo.annora.in' },
+  { label: 'Driver', email: 'driver@demo.annora.in' },
+];
+
 export default function LoginPage() {
   const router = useRouter();
   const [email, setEmail] = useState('admin@annora.in');
@@ -58,6 +65,17 @@ export default function LoginPage() {
           </div>
 
           <form onSubmit={handleSubmit} className="auth-form">
+            <div className="demo-panel">
+              <strong>Demo mode</strong>
+              <span>Demo users: <b>demo123</b> · Admin: <b>admin123</b></span>
+              <div className="demo-account-list">
+                {demoAccounts.map((account) => (
+                  <button key={account.email} type="button" onClick={() => { setEmail(account.email); setPassword(account.label === 'Admin' ? 'admin123' : 'demo123'); }}>
+                    {account.label}
+                  </button>
+                ))}
+              </div>
+            </div>
             <label>
               Email
               <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} required />

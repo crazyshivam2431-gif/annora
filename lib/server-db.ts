@@ -3,7 +3,8 @@ import { join } from 'node:path';
 import { randomBytes, scryptSync, timingSafeEqual } from 'node:crypto';
 import { DatabaseSync } from 'node:sqlite';
 
-export const databaseMode = process.env.NEXT_PUBLIC_SUPABASE_URL ? 'supabase' : 'sqlite';
+export const isDemoMode = process.env.DEMO_MODE !== 'false';
+export const databaseMode = isDemoMode ? 'demo' : process.env.NEXT_PUBLIC_SUPABASE_URL ? 'supabase' : 'sqlite';
 export const isExternalDatabaseConfigured = Boolean(process.env.NEXT_PUBLIC_SUPABASE_URL && process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY);
 
 const dataDirectory = join(process.cwd(), 'data');
@@ -129,6 +130,7 @@ const hashPassword = (password: string) => {
 };
 
 ensureDefaultAdminUser();
+ensureDemoData();
 
 const verifyPassword = (password: string, stored: string) => {
   const [salt, hash] = stored.split(':');
@@ -409,4 +411,37 @@ export function updateNgoVerification(ngoId: string, actor: ServerUser, status: 
   database.prepare('UPDATE ngos SET verification_status = ? WHERE id = ?').run(status, ngoId);
   notify(ngo.user_id, 'NGO verification update', `${ngo.name} verification status is now ${status.replaceAll('_', ' ').toLowerCase()}.`, '/dashboard/ngo');
   return { ngoId, status };
+}
+
+function ensureDemoData() {
+  if (!isDemoMode) return;
+
+  const demoUsers = [
+    { id: 'demo-donor', name: 'Demo Donor', email: 'donor@demo.annora.in', password: 'demo123', role: 'donor' as const, city: 'Jaipur', phone: '+91 90000 00001' },
+    { id: 'demo-ngo-user', name: 'Demo NGO Coordinator', email: 'ngo@demo.annora.in', password: 'demo123', role: 'ngo' as const, city: 'Jaipur', phone: '+91 90000 00002' },
+    { id: 'demo-driver', name: 'Demo Driver', email: 'driver@demo.annora.in', password: 'demo123', role: 'driver' as const, city: 'Jaipur', phone: '+91 90000 00003' },
+  ];
+
+  for (const user of demoUsers) {
+    const existing = database.prepare('SELECT id FROM users WHERE email = ? COLLATE NOCASE').get(user.email) as { id: string } | undefined;
+    if (!existing) {
+      database.prepare('INSERT INTO users (id, name, email, password_hash, role, city, phone, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?)')
+        .run(user.id, user.name, user.email, hashPassword(user.password), user.role, user.city, user.phone, now());
+    }
+  }
+
+  const ngoExists = database.prepare('SELECT id FROM ngos WHERE id = ?').get('demo-ngo') as { id: string } | undefined;
+  if (!ngoExists) {
+    database.prepare('INSERT INTO ngos (id, user_id, name, registration_number, description, authorized_person, phone, email, address, city, state, pincode, max_capacity, current_capacity, daily_meal_requirement, food_preferences, operating_hours, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)')
+      .run('demo-ngo', 'demo-ngo-user', 'Udaan Community Kitchen', 'DEMO-NGO-001', 'A demo organisation receiving safe surplus meals.', 'Demo NGO Coordinator', '+91 90000 00002', 'ngo@demo.annora.in', '12 Civil Lines', 'Jaipur', 'Rajasthan', '302006', 500, 120, 250, JSON.stringify(['Vegetarian', 'Cooked']), '08:00 - 20:00', now());
+  }
+
+  const donationExists = database.prepare('SELECT id FROM donations WHERE id = ?').get('demo-donation') as { id: string } | undefined;
+  if (!donationExists) {
+    const timestamp = now();
+    database.prepare('INSERT INTO donations (id, donor_id, food_name, category, quantity, unit, food_type, preparation_time, safe_until, pickup_time, pickup_address, location, description, status, ngo_id, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)')
+      .run('demo-donation', 'demo-donor', 'Fresh rice and dal meals', 'Cooked Meals', 80, 'meals', 'Vegetarian', timestamp, new Date(Date.now() + 1000 * 60 * 60 * 8).toISOString(), timestamp, 'Demo Cafe, MI Road', 'Jaipur', 'Seeded demo donation for testing the rescue workflow.', 'MATCHED', 'demo-ngo', timestamp, timestamp);
+    database.prepare('INSERT INTO donation_events (id, donation_id, status, note, actor_id, created_at) VALUES (?, ?, ?, ?, ?, ?)')
+      .run('demo-event', 'demo-donation', 'MATCHED', 'Demo donation matched with Udaan Community Kitchen.', 'demo-ngo-user', timestamp);
+  }
 }
