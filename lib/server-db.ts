@@ -4,8 +4,8 @@ import { randomBytes, scryptSync, timingSafeEqual } from 'node:crypto';
 import { DatabaseSync } from 'node:sqlite';
 
 export const isDemoMode = process.env.DEMO_MODE !== 'false';
-export const databaseMode = isDemoMode ? 'demo' : process.env.NEXT_PUBLIC_SUPABASE_URL ? 'supabase' : 'sqlite';
-export const isExternalDatabaseConfigured = Boolean(process.env.NEXT_PUBLIC_SUPABASE_URL && process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY);
+export const databaseMode = 'demo';
+export const isExternalDatabaseConfigured = false;
 
 const dataDirectory = join(process.cwd(), 'data');
 mkdirSync(dataDirectory, { recursive: true });

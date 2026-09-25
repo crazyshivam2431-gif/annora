@@ -1,7 +1,6 @@
 import './globals.css';
 import type { Metadata } from 'next';
 import { ZevaChat } from '@/components/zeva-chat';
-import { isDemoMode } from '@/lib/db-config';
 
 export const metadata: Metadata = {
   title: 'ANNORA — Turning Surplus into Support',
@@ -15,7 +14,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en" data-scroll-behavior="smooth">
       <body>
         {children}
-        {isDemoMode && <div className="demo-mode-banner">Demo mode · local mock data</div>}
         <ZevaChat />
         <p className="site-credit">Developed by Blacksmith</p>
       </body>
