@@ -10,13 +10,13 @@ export default async function AdminDashboardPage() {
   if (!user) redirect('/login?error=auth_required');
   if (user.role !== 'admin') redirect('/?error=admin_only');
   const dashboard = getDashboardData(user);
-  const pendingNgo = Math.max(dashboard.stats.pendingNgo, 0);
-  const activeDonations = Math.max(dashboard.stats.activeDonations, 0);
+  const pendingNgo = Math.max(0, dashboard.stats.pendingNgo ?? 0);
+  const activeDonations = Math.max(0, dashboard.stats.activeDonations ?? 0);
   const priorityItems = [
     { title: 'Review NGO applications', description: `${pendingNgo} partner applications are queued for approval.`, href: '#ngo-verification', badge: pendingNgo > 0 ? 'Action required' : 'Clear' },
     { title: 'Monitor rescues', description: `${activeDonations} active food rescues need operational attention.`, href: '/rescue', badge: 'Live feed' },
     { title: 'Check notifications', description: 'Review updates, status changes, and urgent rescues.', href: '/notifications', badge: `${dashboard.notifications.length} recent` },
-  ];
+  ] as const;
 
   return (
     <main className="page-shell admin-dashboard-page">
@@ -62,13 +62,13 @@ export default async function AdminDashboardPage() {
 
             <div className="admin-priority-list">
               {priorityItems.map((item) => (
-                <Link key={item.title} href={item.href} className="admin-priority-item">
+                <a key={item.title} href={item.href} className="admin-priority-item">
                   <div>
                     <strong>{item.title}</strong>
                     <small>{item.description}</small>
                   </div>
                   <span>{item.badge}</span>
-                </Link>
+                </a>
               ))}
             </div>
           </div>
@@ -87,7 +87,7 @@ export default async function AdminDashboardPage() {
             ) : (
               <ul className="list-stack admin-alerts-list">
                 {dashboard.notifications.slice(0, 5).map((notification) => (
-                  <li key={notification.id} className="list-item admin-alert-item">
+                  <li key={String(notification.id)} className="list-item admin-alert-item">
                     <div>
                       <strong>{notification.title}</strong>
                       <small>{notification.message}</small>
