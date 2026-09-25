@@ -13,7 +13,7 @@ export async function POST(request: Request) {
     const body = await request.json() as { messages?: ChatMessage[] };
     const latestMessage = body.messages?.filter((message) => message.role === 'user').at(-1)?.content?.trim();
     if (!latestMessage) return NextResponse.json({ error: 'Please enter a message.' }, { status: 400 });
-    return NextResponse.json({ message: answerZeva(latestMessage).text, provider: 'blacksmith' });
+    return NextResponse.json({ message: answerZeva(latestMessage).text, provider: 'Hacksmiths' });
   }
 
   try {

@@ -15,7 +15,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body>
         {children}
         <ZevaChat />
-        <p className="site-credit">Developed by Blacksmith</p>
+        <p className="site-credit">Developed by Hacksmiths</p>
       </body>
     </html>
   );

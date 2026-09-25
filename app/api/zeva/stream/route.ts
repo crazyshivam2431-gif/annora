@@ -20,7 +20,7 @@ export async function POST(request: Request) {
         if (!apiKey || apiKey === 'your-openai-key') {
           const fallback = answerZeva(messages.filter((message) => message.role === 'user').at(-1)?.content ?? '').text;
           for (const chunk of fallback.split(/(\s+)/)) controller.enqueue(encoder.encode(event({ delta: chunk })));
-          controller.enqueue(encoder.encode(event({ done: true, provider: 'blacksmith' })));
+          controller.enqueue(encoder.encode(event({ done: true, provider: 'Hacksmiths' })));
           controller.close();
           return;
         }

@@ -114,7 +114,7 @@ export function ZevaChat() {
               <div className="zeva-mini-avatar"><img className="zeva-brand-mark" src="/brand/zeva-mark.svg" alt="" /></div>
               <div>
                 <strong>ZEVA AI</strong>
-                <small><span className="zeva-status-dot" /> Powered by Blacksmith</small>
+                <small><span className="zeva-status-dot" /> Powered by Hacksmiths</small>
               </div>
             </div>
             <div className="zeva-actions">
