@@ -8,8 +8,8 @@ import { SiteHeader } from '@/components/site-header';
 
 export default function LoginPage() {
   const router = useRouter();
-  const [email, setEmail] = useState('donor@annora.in');
-  const [password, setPassword] = useState('123456');
+  const [email, setEmail] = useState('admin@annora.in');
+  const [password, setPassword] = useState('admin123');
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');

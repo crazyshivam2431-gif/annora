@@ -6,6 +6,12 @@ import { DatabaseSync } from 'node:sqlite';
 const dataDirectory = join(process.cwd(), 'data');
 mkdirSync(dataDirectory, { recursive: true });
 
+const defaultAdminEmail = process.env.ADMIN_EMAIL ?? 'admin@annora.in';
+const defaultAdminPassword = process.env.ADMIN_PASSWORD ?? 'admin123';
+const defaultAdminName = process.env.ADMIN_NAME ?? 'ANNORA Admin';
+const defaultAdminCity = process.env.ADMIN_CITY ?? 'Jaipur';
+const defaultAdminPhone = process.env.ADMIN_PHONE ?? '+91 90000 00000';
+
 const database = new DatabaseSync(join(dataDirectory, 'annora.sqlite'));
 database.exec(`
   PRAGMA journal_mode = WAL;
@@ -118,6 +124,9 @@ const hashPassword = (password: string) => {
   const salt = randomBytes(16).toString('hex');
   return `${salt}:${scryptSync(password, salt, 64).toString('hex')}`;
 };
+
+ensureDefaultAdminUser();
+
 const verifyPassword = (password: string, stored: string) => {
   const [salt, hash] = stored.split(':');
   if (!salt || !hash) return false;
@@ -126,6 +135,14 @@ const verifyPassword = (password: string, stored: string) => {
 };
 
 const mapUser = (row: any): ServerUser => ({ id: row.id, name: row.name, email: row.email, role: row.role, city: row.city, phone: row.phone });
+
+function ensureDefaultAdminUser() {
+  const existing = database.prepare('SELECT id FROM users WHERE email = ? COLLATE NOCASE').get(defaultAdminEmail) as { id: string } | undefined;
+  if (existing) return;
+
+  database.prepare('INSERT INTO users (id, name, email, password_hash, role, city, phone, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?)')
+    .run(id('user'), defaultAdminName, defaultAdminEmail, hashPassword(defaultAdminPassword), 'admin', defaultAdminCity, defaultAdminPhone, now());
+}
 
 export function createUser(input: { name: string; email: string; password: string; role: ServerUser['role']; city: string; phone: string }) {
   const user = { id: id('user'), ...input, password_hash: hashPassword(input.password), created_at: now() };

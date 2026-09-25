@@ -2533,8 +2533,22 @@ body {
 .detail-description p { margin: 0; color: var(--muted); line-height: 1.7; }
 .donation-actions { margin: 16px 0; padding: 16px 18px; border: 1px solid var(--line); border-radius: 12px; background: rgba(255, 255, 255, 0.78); }
 .donation-action-buttons { display: flex; flex-wrap: wrap; gap: 10px; }
-.admin-review-list { display: grid; gap: 12px; }.admin-review-card { display: flex; align-items: center; justify-content: space-between; gap: 18px; padding: 17px; border: 1px solid var(--line); border-radius: 12px; background: rgba(248, 251, 248, 0.8); }.admin-review-card h3 { margin: 6px 0 4px; font-family: 'Fraunces', Georgia, serif; font-size: 1.25rem; }.admin-review-card p { margin: 0; color: var(--muted); font-size: 0.78rem; }.admin-review-actions { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 7px; }.admin-review-actions button { padding: 0.55rem 0.7rem; font-size: 0.72rem; }.danger-btn { border: 1px solid #edc8c0; border-radius: 8px; background: #fff5f2; color: #9f4032; font-weight: 800; }
-@media (max-width: 760px) { .admin-review-card { align-items: flex-start; flex-direction: column; }.admin-review-actions { justify-content: flex-start; } }
+.admin-dashboard-page .panel-heading { align-items: center; }
+.admin-two-column-grid { display: grid; grid-template-columns: 1.08fr 0.92fr; gap: 18px; margin-bottom: 18px; }
+.admin-priority-list { display: grid; gap: 12px; margin-top: 14px; }
+.admin-priority-item { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 15px 16px; border: 1px solid var(--line); border-radius: 12px; background: linear-gradient(135deg, rgba(47, 128, 103, 0.04), rgba(255, 255, 255, 0.8)); color: var(--text); transition: transform 0.2s ease, border-color 0.2s ease; }
+.admin-priority-item:hover { transform: translateY(-2px); border-color: rgba(47, 128, 103, 0.32); }
+.admin-priority-item > div { display: flex; flex-direction: column; gap: 5px; }
+.admin-priority-item strong { font-size: 0.96rem; }
+.admin-priority-item small { color: var(--muted); line-height: 1.5; }
+.admin-priority-item span { padding: 0.42rem 0.7rem; border: 1px solid rgba(47, 128, 103, 0.18); border-radius: 999px; background: rgba(47, 128, 103, 0.08); color: var(--secondary); font-size: 0.68rem; font-weight: 800; letter-spacing: 0.04em; text-transform: uppercase; }
+.admin-alerts-list { margin-top: 10px; }
+.admin-alert-item { padding: 0 0 14px; }
+.admin-alert-item:last-child { padding-bottom: 0; }
+.admin-alert-item strong { font-size: 0.9rem; }
+.admin-queue-panel { margin-top: 18px; }
+.admin-review-list { display: grid; gap: 12px; margin-top: 10px; }.admin-review-card { display: flex; align-items: center; justify-content: space-between; gap: 18px; padding: 17px; border: 1px solid var(--line); border-radius: 12px; background: rgba(248, 251, 248, 0.8); }.admin-review-card h3 { margin: 6px 0 4px; font-family: 'Fraunces', Georgia, serif; font-size: 1.25rem; }.admin-review-card p { margin: 0; color: var(--muted); font-size: 0.78rem; }.admin-review-actions { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 7px; }.admin-review-actions button { padding: 0.55rem 0.7rem; font-size: 0.72rem; }.danger-btn { border: 1px solid #edc8c0; border-radius: 8px; background: #fff5f2; color: #9f4032; font-weight: 800; }
+@media (max-width: 760px) { .admin-two-column-grid { grid-template-columns: 1fr; } .admin-review-card { align-items: flex-start; flex-direction: column; }.admin-review-actions { justify-content: flex-start; } }
 
 @media (max-width: 620px) {
   .detail-heading { align-items: flex-start; flex-direction: column; }
