@@ -3,6 +3,9 @@ import { join } from 'node:path';
 import { randomBytes, scryptSync, timingSafeEqual } from 'node:crypto';
 import { DatabaseSync } from 'node:sqlite';
 
+export const databaseMode = process.env.NEXT_PUBLIC_SUPABASE_URL ? 'supabase' : 'sqlite';
+export const isExternalDatabaseConfigured = Boolean(process.env.NEXT_PUBLIC_SUPABASE_URL && process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY);
+
 const dataDirectory = join(process.cwd(), 'data');
 mkdirSync(dataDirectory, { recursive: true });
 

@@ -22,4 +22,4 @@ NEXT_PUBLIC_SUPABASE_ANON_KEY=your-anon-key
 
 The schema includes profiles, donor profiles, driver profiles, NGOs, private NGO documents, donations, matches, deliveries, impact events, notifications, audit logs, chat sessions/messages, and AI tool-call records.
 
-RLS is enabled on all Phase 1 tables. Policies are ownership- and role-aware. The current application still uses its local SQLite adapter for existing flows; migrating those flows to Supabase is intentionally deferred to Phase 2.
+RLS is enabled on all Phase 1 tables. Policies are ownership- and role-aware. The application now supports a clear external-server configuration path: if `NEXT_PUBLIC_SUPABASE_URL` and the matching Supabase keys are present, the app is ready to run against Supabase; otherwise it continues to use the local SQLite adapter for local development and testing.
