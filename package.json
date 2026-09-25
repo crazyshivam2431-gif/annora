@@ -2,6 +2,9 @@
   "name": "annora",
   "version": "0.1.0",
   "private": true,
+  "engines": {
+    "node": "22.x"
+  },
   "scripts": {
     "dev": "node ./scripts/run-next-dev.js",
     "build": "npx next build",

@@ -1,5 +1,6 @@
 import { mkdirSync } from 'node:fs';
 import { join } from 'node:path';
+import { tmpdir } from 'node:os';
 import { randomBytes, scryptSync, timingSafeEqual } from 'node:crypto';
 import { DatabaseSync } from 'node:sqlite';
 
@@ -7,7 +8,7 @@ export const isDemoMode = process.env.DEMO_MODE !== 'false';
 export const databaseMode = 'demo';
 export const isExternalDatabaseConfigured = false;
 
-const dataDirectory = join(process.cwd(), 'data');
+const dataDirectory = isDemoMode ? join(tmpdir(), 'annora-demo-data') : join(process.cwd(), 'data');
 mkdirSync(dataDirectory, { recursive: true });
 
 const defaultAdminEmail = process.env.ADMIN_EMAIL ?? 'admin@annora.in';
